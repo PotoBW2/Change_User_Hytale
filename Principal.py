@@ -1,13 +1,13 @@
 import configparser
 import os
 from Funciones import png_to_ico, obt_all_users, verificar_no_nick_repetidos, instertar_usuarios, \
-    obtener_nombre_inicial, obtener_id, editar_datos
+    obtener_nombre_inicial, obtener_id, editar_datos, resource_path
 from tkinter import *
 from tkinter import ttk, messagebox
 
 ventana = Tk()
 ventana.title("Change User Hytale - v1.00")
-icono = png_to_ico("Icon-256.png")
+icono = png_to_ico(resource_path("image/Icon-256.png"))
 ventana.iconphoto(True, icono)
 
 """Centra la ventana en la pantalla"""
@@ -35,17 +35,18 @@ if os.path.exists('OnlineFix.ini'):
         ventana.opc_usuario.append(elemento[0])
     ventana.sel_usuario['values'] = ventana.opc_usuario
     ventana.sel_usuario.set(obtener_nombre_inicial())
+    ventana.bt_new_user = ttk.Button(ventana.principal, text='Nuevo Usuario',
+                                     command=lambda: abrir_ventana_add_user(ventana))
+    ventana.bt_new_user.grid(column=1, row=0)
+
+    ventana.bt_aceptar_user = ttk.Button(ventana.principal, text='Aceptar', command=lambda: editar_init(ventana))
+    ventana.bt_aceptar_user.grid(column=1, row=1)
+
+
 else:
     messagebox.showinfo(message='No se pudo encontrar el archivo OnlineFix.ini.', icon='error', title='ERROR')
     ventana.quit()
     ventana.destroy()
-
-ventana.bt_new_user = ttk.Button(ventana.principal, text='Nuevo Usuario',
-                                 command=lambda: abrir_ventana_add_user(ventana))
-ventana.bt_new_user.grid(column=1, row=0)
-
-ventana.bt_aceptar_user = ttk.Button(ventana.principal, text='Aceptar', command=lambda: editar_init(ventana))
-ventana.bt_aceptar_user.grid(column=1, row=1)
 
 
 def abrir_ventana_add_user(ventana):
