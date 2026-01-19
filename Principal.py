@@ -1,6 +1,6 @@
 import configparser
 import os
-from Funciones import png_to_ico, auxiliar, obt_all_users, verificar_no_nick_repetidos, instertar_usuarios, \
+from Funciones import png_to_ico, obt_all_users, verificar_no_nick_repetidos, instertar_usuarios, \
     obtener_nombre_inicial, obtener_id, editar_datos
 from tkinter import *
 from tkinter import ttk, messagebox
@@ -75,17 +75,23 @@ def abrir_ventana_add_user(ventana):
                                                  command=lambda: agregar_user_to_bd(ventana))
     ventana.tl_add_user.bt_add_user.grid(column=1, row=0)
 
+
 def agregar_user_to_bd(ventana):
     if not verificar_no_nick_repetidos(ventana.tl_add_user.var_nick.get()):
-        instertar_usuarios(ventana.tl_add_user.var_nick.get())
-        ventana.opc_usuario = []
-        for elemento in obt_all_users():
-            ventana.opc_usuario.append(elemento[0])
-        ventana.sel_usuario['values'] = ventana.opc_usuario
-        ventana.sel_usuario.set(ventana.tl_add_user.var_nick.get())
-        ventana.tl_add_user.destroy()
+        if ventana.tl_add_user.var_nick.get().isalpha():
+            instertar_usuarios(ventana.tl_add_user.var_nick.get())
+            ventana.opc_usuario = []
+            for elemento in obt_all_users():
+                ventana.opc_usuario.append(elemento[0])
+            ventana.sel_usuario['values'] = ventana.opc_usuario
+            ventana.sel_usuario.set(ventana.tl_add_user.var_nick.get())
+            ventana.tl_add_user.destroy()
+        else:
+            messagebox.showinfo(
+                message='El nombre del nuevo usuario contiene caracteres no permitidos. Solo se permiten letras.',
+                icon='error', title='ERROR')
     else:
-        print("nombre repetido")
+        messagebox.showinfo(message='Ya existe un Usuario con ese nombre (nick).', icon='error', title='ERROR')
 
 
 def editar_init(ventana):
@@ -94,5 +100,6 @@ def editar_init(ventana):
     editar_datos(id, nick)
     ventana.quit()
     ventana.destroy()
+
 
 ventana.mainloop()

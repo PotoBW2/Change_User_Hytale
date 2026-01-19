@@ -1,6 +1,8 @@
 import os
 import sqlite3
 import configparser
+from tkinter import messagebox
+
 from PIL import Image, ImageTk
 import random
 import string
@@ -38,11 +40,11 @@ def obtener_datos_iniciales():
             nick = config['User']['Name']
             return id, nick
     except configparser.NoSectionError:
-        print("Error: Sección no encontrada.")
+        messagebox.showinfo(message='Archivo "OnlineFix.ini" corrupto.', icon='error', title='ERROR')
     except configparser.NoOptionError:
-        print("Error: Opción no encontrada.")
+        messagebox.showinfo(message='Archivo "OnlineFix.ini" corrupto.', icon='error', title='ERROR')
     except Exception as e:
-        print(f"Error inesperado: {e}")
+        messagebox.showinfo(message='Error inesperado.', icon='error', title='ERROR')
 
 def obtener_nombre_inicial():
     config = configparser.ConfigParser()
@@ -52,20 +54,17 @@ def obtener_nombre_inicial():
             nick = config['User']['Name']
             return nick
     except configparser.NoSectionError:
-        print("Error: Sección no encontrada.")
+        messagebox.showinfo(message='Archivo "OnlineFix.ini" corrupto.', icon='error', title='ERROR')
     except configparser.NoOptionError:
-        print("Error: Opción no encontrada.")
+        messagebox.showinfo(message='Archivo "OnlineFix.ini" corrupto.', icon='error', title='ERROR')
     except Exception as e:
-        print(f"Error inesperado: {e}")
+        messagebox.showinfo(message='Error inesperado.', icon='error', title='ERROR')
 
 
 def png_to_ico(org):
     imagen = Image.open(org)
     return ImageTk.PhotoImage(imagen)
 
-
-def auxiliar():
-    print("funciono")
 
 
 def obt_all_users():
@@ -169,11 +168,11 @@ def editar_datos(id, nick):
             config['User']['UUID'] = id
             config['User']['Name'] = nick
     except configparser.NoSectionError:
-        print("Error: Sección no encontrada.")
+        messagebox.showinfo(message='Archivo "OnlineFix.ini" corrupto.', icon='error', title='ERROR')
     except configparser.NoOptionError:
-        print("Error: Opción no encontrada.")
+        messagebox.showinfo(message='Archivo "OnlineFix.ini" corrupto.', icon='error', title='ERROR')
     except Exception as e:
-        print(f"Error inesperado: {e}")
+        messagebox.showinfo(message='Error inesperado.', icon='error', title='ERROR')
 
     with open('OnlineFix.ini', 'w', encoding='utf-8-sig') as configfile:
         config.write(configfile)
